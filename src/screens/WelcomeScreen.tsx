@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { SafeAreaView, View, Image } from "react-native";
+import {Picker} from '@react-native-picker/picker';
 import { StackNavigationProp } from '@react-navigation/stack';
 import styled from "styled-components";
 
@@ -44,13 +45,21 @@ const WelcomeScreen = ({ navigation }: Props) => {
         </H2>
         <Spacer small />
         <T center>Bitcoin Cash (BCH) and Simple Token (SLP) wallet </T>
+        <Spacer small />
+        <Picker style={{ height: 50, width: 150 }}>
+          <Picker.Item label="Java" value="java" />
+          <Picker.Item label="JavaScript" value="js" />
+        </Picker>
+        <Spacer small />
       </View>
+      
 
       <View
         style={{
           flex: 1
         }}
       >
+        
         <Button
           onPress={() => navigation.navigate("CreateWalletScreen")}
           text="New Wallet"
