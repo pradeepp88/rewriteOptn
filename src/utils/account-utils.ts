@@ -11,15 +11,15 @@ const deriveAccount = async (
   accountIndex: number = 0,
   childIndex: number = 0,
   hdPathString: string,
-  //network: string
+  network: string
 ) => {
   if (!mnemonic) {
     throw new Error("Mnemonic required to derive account"); 
   }
 
   const { store } = getStore();
-  const network = store.getState().networks.currentNetwork;
-  console.log("Current Network is ",network);
+  const network1 = store.getState().networks.currentNetwork;
+  console.log("Current Network is ", network1);
 
   const seed = await bchjs.Mnemonic.toSeed(mnemonic);
   const hdWallet = bchjs.HDNode.fromSeed(seed, network);

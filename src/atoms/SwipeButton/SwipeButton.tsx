@@ -109,7 +109,7 @@ const SwipeButton = ({
                 paddingTop: 2
               }}
             >
-              <Ionicons name="ios-arrow-round-forward" size={25} />
+              <Ionicons name="arrow-forward" size={25} />
             </T>
             <T weight="bold" type="inverse">
               {" "}

@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { connect, ConnectedProps } from "react-redux";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { NavigationScreenProps } from "react-navigation";
+import { StackNavigationProp } from '@react-navigation/stack';
 
 import {
   SafeAreaView,
@@ -12,8 +12,9 @@ import {
   TouchableOpacity
 } from "react-native";
 
-import { FullState } from "../data/store";
+import { FullState, getStore } from "../data/store";
 import { toggleNetwork } from "../data/networks/actions"
+import { Network } from "../data/networks/reducer"
 import { currentNetworkSelector } from "../data/networks/selectors"
 import {
   NetworkCode,
@@ -66,7 +67,7 @@ const NetworkRow = ({ text, onPress, isActive }: PropsNetworkRow) => (
   </RowContainer>
 );
 
-type PropsFromParent = NavigationScreenProps & {};
+type PropsFromParent = StackNavigationProp & {};
 
 const mapStateToProps = (state: FullState) => {
   return {
@@ -88,8 +89,12 @@ const SelectNetworkScreen = ({
   networkActive,
   toggleNetwork
 }: Props) => {
-  const updateNetwork = (network: NetworkCode) => {
+  const updateNetwork = (network: Network) => {
+    console.log(network);
     toggleNetwork(network);
+    const { store } = getStore();
+    const network1 = store.getState().networks.currentNetwork;
+    console.log(network1);
   };
 
   return (
@@ -105,13 +110,13 @@ const SelectNetworkScreen = ({
           <Spacer />
         </ActiveSection>
         <ScrollView>
-          {networkOptions.map((networkCode: NetworkCode) => {
+          {networkOptions.map((network: Network) => {
             return (
               <NetworkRow
-                key={networkCode}
-                text={`${networkCode} - ${networkNameMap[networkCode]}`}
-                onPress={() => toggleNetwork(networkCode)}
-                isActive={networkActive === networkCode}
+                key={network}
+                text={`${network} - ${networkNameMap[network]}`}
+                onPress={() => updateNetwork(network)}
+                isActive={networkActive === network}
               />
             );
           })}

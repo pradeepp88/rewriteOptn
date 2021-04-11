@@ -10,9 +10,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import ReduxThunk, { ThunkMiddleware } from "redux-thunk";
 
 import accountsReducer, {
-  State as StateAccount,
+  State as StateAccounts,
   initialState as initialAccountState
 } from "./accounts/reducer";
+
+import artifactsReducer, {
+  State as StateArtifacts,
+  initialState as initialArtifactState
+} from "./artifacts/reducer";
 
 import transactionsReducer, {
   State as StateTransactions,
@@ -45,7 +50,8 @@ import networksReducer, {
 } from "./networks/reducer";
 
 export type FullState = {
-  accounts: StateAccount;
+  accounts: StateAccounts;
+  artifacts: StateArtifacts;
   prices: StatePrices;
   tokens: StateTokens;
   transactions: StateTransactions;
@@ -57,6 +63,7 @@ export type FullState = {
 
 const initialState: FullState = {
   accounts: initialAccountState,
+  artifacts: initialArtifactState,
   prices: initialPricesState,
   tokens: initialTokensState,
   transactions: initialTransactionsState,
@@ -80,6 +87,19 @@ const accountsPersistConfig = {
   blacklist: ["keypairsByAccount"]
 };
 
+const networkPersistConfig = {
+  key: "networks",
+  storage: AsyncStorage,
+  whitelist: ["currentNetwork"]
+}
+
+// temporarily setting whitelist for P2SH ID
+const artifactPersistConfig = {
+  key: "artifacts",
+  storage: AsyncStorage,
+  whitelist: ["byId", "allIds"]
+};
+
 const pricesPersistConfig = {
   key: "prices",
   storage: AsyncStorage,
@@ -88,12 +108,13 @@ const pricesPersistConfig = {
 
 const rootReducer = combineReducers({
   accounts: persistReducer(accountsPersistConfig, accountsReducer),
+  artifacts: persistReducer(artifactPersistConfig, artifactsReducer),
   prices: persistReducer(pricesPersistConfig, pricesReducer),
+  networks: persistReducer(networkPersistConfig, networksReducer),
   tokens: tokensReducer,
   transactions: transactionsReducer,
   utxos: utxosReducer,
   settings: settingsReducer,
-  networks: networksReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
