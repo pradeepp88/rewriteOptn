@@ -5,22 +5,38 @@ import {
 
 import { NetworkCode } from "../../utils/network-utils";
 
-export interface Network {
-  network: string
+enum networkType {
+  Mainnet = "mainnet",
+  Testnet = "testnet"
 }
 
+export type Network = 
+  | "mainnet"
+  | "testnet";
+
 export type State = {
-  currentNetwork: NetworkCode;
+  version: string;
+  currentNetwork: networkType;
 }
 
 export const initialState: State = {
-  currentNetwork: "mainnet"
+  version: "1",
+  currentNetwork: networkType.Mainnet
 }
 
-const updateNetwork = (state: State, networkCode: NetworkCode) => {
+const updateNetwork = (state: State, network: Network) => {
+  console.log(network)
+  let net
+  if (state.currentNetwork === networkType.Mainnet) {
+    net = networkType.Testnet
+  } else if (state.currentNetwork === networkType.Testnet) {
+    net = networkType.Mainnet
+  } else {
+    net = networkType.Testnet
+  }
   return {
     ...state,
-    currentNetwork: networkCode
+    currentNetwork: net
   }
 }
 
